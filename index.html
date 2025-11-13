@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>MFIT Personal – Plataforma para Personal Trainers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-2: #0b1120;
+      --bg-3: #111827;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #ef4444;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.45);
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 45%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Layout base */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #020617, #020617 40%, #09090b 100%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.92), rgba(2, 6, 23, 0.8), transparent);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #22c55e, #16a34a 40%, #0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3), 0 18px 35px rgba(22, 163, 74, 0.35);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 1.05rem;
+    }
+
+    .logo-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      cursor: pointer;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.5);
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      padding: 0.55rem 1.35rem;
+      font-size: 0.85rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: transparent;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #022c22;
+      font-weight: 600;
+      box-shadow: 0 12px 30px rgba(22, 163, 74, 0.45);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 45px rgba(22, 163, 74, 0.5);
+    }
+
+    .btn-outline {
+      border-color: rgba(148, 163, 184, 0.6);
+      color: var(--muted);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(226, 232, 240, 0.9);
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      cursor: pointer;
+    }
+
+    .mobile-menu-btn span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      position: relative;
+    }
+
+    .mobile-menu-btn span::before,
+    .mobile-menu-btn span::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      left: 0;
+    }
+
+    .mobile-menu-btn span::before {
+      top: -5px;
+    }
+
+    .mobile-menu-btn span::after {
+      top: 5px;
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+
+    .mobile-nav .nav-link {
+      padding-top: 0.35rem;
+      border-bottom: none;
+    }
+
+    .mobile-nav .nav-cta {
+      margin-top: 0.5rem;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 3.5rem 0 3rem;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr);
+      gap: 2.75rem;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border-radius: 999px;
+      padding: 0.2rem 0.7rem 0.2rem 0.2rem;
+      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.14), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-tag-pill {
+      border-radius: var(--radius-pill);
+      padding: 0.25rem 0.55rem;
+      background: rgba(15, 23, 42, 0.95);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #86efac;
+    }
+
+    .hero-tag-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #22c55e, #a3e635);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 34rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-actions small {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .hero-meta strong {
+      display: block;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    .hero-card {
+      border-radius: 24px;
+      background: radial-gradient(circle at 10% 0, rgba(34, 197, 94, 0.1), rgba(15, 23, 42, 1));
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      padding: 1.4rem 1.35rem;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .hero-card-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.2rem 0.6rem;
+      background: rgba(22, 163, 74, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      font-size: 0.7rem;
+      color: #bbf7d0;
+    }
+
+    .hero-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+    }
+
+    .hero-card-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr;
+      gap: 0.9rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-card-block {
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 0.7rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .hero-card-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-card-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .hero-card-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    .hero-pill {
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      border: 1px solid rgba(55, 65, 81, 0.85);
+      background: rgba(15, 23, 42, 0.98);
+      color: var(--muted);
+    }
+
+    .hero-highlight {
+      border-radius: 17px;
+      padding: 0.5rem 0.65rem;
+      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.18), transparent 55%);
+      border: 1px dashed rgba(34, 197, 94, 0.45);
+      font-size: 0.75rem;
+      color: #bbf7d0;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-highlight span {
+      font-size: 1.05rem;
+    }
+
+    /* Sections */
+    .section {
+      padding: 3rem 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .section-title-block {
+      max-width: 28rem;
+    }
+
+    .section-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      margin-bottom: 0.35rem;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .section-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      max-width: 18rem;
+    }
+
+    /* Personas */
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.1rem;
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--muted);
+    }
+
+    .card-body {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .list {
+      list-style: none;
+      margin-top: 0.4rem;
+    }
+
+    .list li {
+      padding-left: 0.9rem;
+      position: relative;
+      margin-bottom: 0.25rem;
+    }
+
+    .list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #22c55e;
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.1rem;
+    }
+
+    .card-icon {
+      font-size: 1.3rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.4rem;
+    }
+
+    .chip {
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      color: var(--muted);
+    }
+
+    /* Planos */
+    .plans-wrapper {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.11), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      padding: 1.4rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .plans-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .plans-toggle button {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-size: 0.75rem;
+    }
+
+    .plans-toggle button.active {
+      background: #22c55e;
+      color: #052e16;
+      font-weight: 600;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .plan-card {
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 1rem;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .plan-header {
+      margin-bottom: 0.5rem;
+    }
+
+    .plan-name {
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+
+    .plan-tag {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .plan-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0.35rem 0;
+    }
+
+    .plan-price span {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .plan-list {
+      list-style: none;
+      margin-top: 0.4rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .plan-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .plan-list li::before {
+      content: "✔";
+      font-size: 0.7rem;
+      color: #22c55e;
+    }
+
+    .plan-cta {
+      margin-top: 0.3rem;
+    }
+
+    .plan-featured {
+      border-color: #22c55e;
+      box-shadow: 0 18px 45px rgba(22, 163, 74, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-featured::before {
+      content: "Mais usado";
+      position: absolute;
+      top: 0.6rem;
+      right: 0.7rem;
+      font-size: 0.65rem;
+      background: rgba(34, 197, 94, 0.14);
+      border-radius: 999px;
+      padding: 0.13rem 0.55rem;
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+    }
+
+    /* Depoimentos e FAQ */
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      gap: 1.2rem;
+    }
+
+    .testimonial-card {
+      border-radius: var(--radius-lg);
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #022c22;
+    }
+
+    .faq-item {
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.98);
+      margin-bottom: 0.55rem;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .faq-question span {
+      font-size: 0.9rem;
+    }
+
+    .faq-answer {
+      padding: 0 0.75rem 0.55rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0 1.8rem;
+      margin-top: 1.5rem;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), #020617);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1.2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+    }
+
+    .footer-links a {
+      cursor: pointer;
+    }
+
+    .footer-links a:hover {
+      color: #e5e7eb;
+    }
+
+    /* Responsivo */
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-card {
+        max-width: 460px;
+        margin: 0 auto;
+      }
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .personas-grid,
+      .features-grid,
+      .plans-grid,
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      nav {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
+      .hero {
+        padding-top: 2.4rem;
+      }
+      .header-inner {
+        padding: 0.7rem 0;
+      }
+      .mobile-nav.open {
+        display: flex;
+      }
+      .plans-wrapper {
+        padding: 1rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-mark">MF</div>
+          <div class="logo-text">
+            <div class="logo-title">MFIT Personal</div>
+            <div class="logo-sub">Plataforma para Personal Trainers</div>
+          </div>
+        </div>
+
+        <nav>
+          <div class="nav-links">
+            <div class="nav-link" data-scroll="#sec-sobre">Sobre</div>
+            <div class="nav-link" data-scroll="#sec-para-quem">Para quem é</div>
+            <div class="nav-link" data-scroll="#sec-funcionalidades">Funcionalidades</div>
+            <div class="nav-link" data-scroll="#sec-planos">Planos</div>
+            <div class="nav-link" data-scroll="#sec-depoimentos">Resultados</div>
+          </div>
+          <div class="nav-cta">
+            <button class="btn btn-outline" data-scroll="#sec-planos">Ver planos</button>
+            <button class="btn btn-primary" data-scroll="#hero">Testar grátis</button>
+          </div>
+        </nav>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menu">
+          <span></span>
+        </button>
+      </div>
+
+      <div class="mobile-nav" id="mobileNav">
+        <div class="nav-link" data-scroll="#sec-sobre">Sobre</div>
+        <div class="nav-link" data-scroll="#sec-para-quem">Para quem é</div>
+        <div class="nav-link" data-scroll="#sec-funcionalidades">Funcionalidades</div>
+        <div class="nav-link" data-scroll="#sec-planos">Planos</div>
+        <div class="nav-link" data-scroll="#sec-depoimentos">Resultados</div>
+        <div class="nav-cta">
+          <button class="btn btn-outline" data-scroll="#sec-planos">Ver planos</button>
+          <button class="btn btn-primary" data-scroll="#hero">Testar grátis</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero" id="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="hero-tag">
+            <div class="hero-tag-pill">Nova versão Web</div>
+            <div class="hero-tag-text">Mais conversão, menos trabalho manual.</div>
+          </div>
+          <h1 class="hero-title">
+            Organize sua consultoria fitness<br />
+            <span>em um único painel profissional.</span>
+          </h1>
+          <p class="hero-subtitle">
+            O novo site do MFIT Personal foi pensado para mostrar, em segundos, porque a plataforma é a melhor aliada
+            do personal trainer moderno: treinos, alunos, pagamentos e evolução em um só lugar.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-scroll="#sec-planos">
+              Começar teste grátis
+              <span>→</span>
+            </button>
+            <button class="btn btn-outline" data-scroll="#sec-funcionalidades">
+              Ver como funciona
+            </button>
+            <small>Não precisa de cartão de crédito.</small>
+          </div>
+
+          <div class="hero-meta">
+            <div>
+              <strong>+10.000</strong>
+              personal trainers atendidos.
+            </div>
+            <div>
+              <strong>Até 60% menos tempo</strong>
+              gastando em tarefas administrativas.
+            </div>
+            <div>
+              <strong>App + Web</strong>
+              para você e seus alunos.
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card" aria-hidden="true">
+          <div class="hero-card-header">
+            <div>
+              <div class="hero-card-title">Visão do personal</div>
+              <div style="font-size:0.75rem;color:var(--muted);">
+                Visão geral dos alunos – hoje
+              </div>
+            </div>
+            <div class="hero-status">
+              <div class="hero-status-dot"></div>
+              Online
+            </div>
+          </div>
+
+          <div class="hero-card-grid">
+            <div class="hero-card-block">
+              <div class="hero-card-label">Alunos ativos</div>
+              <div class="hero-card-value">32</div>
+              <div style="font-size:0.7rem;color:var(--muted);margin-top:0.15rem;">
+                5 novos este mês
+              </div>
+            </div>
+            <div class="hero-card-block">
+              <div class="hero-card-label">Treinos da semana</div>
+              <div class="hero-card-value">118</div>
+              <div style="font-size:0.7rem;color:var(--muted);margin-top:0.15rem;">
+                87 já concluídos ✅
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card-grid">
+            <div class="hero-card-block">
+              <div class="hero-card-label">Pagamentos em dia</div>
+              <div class="hero-card-value">R$ 7.420</div>
+              <div style="font-size:0.7rem;color:var(--muted);margin-top:0.15rem;">
+                4 alunos com fatura pendente
+              </div>
+            </div>
+            <div class="hero-card-block">
+              <div class="hero-card-label">Alertas</div>
+              <div class="hero-card-value">9</div>
+              <div style="font-size:0.7rem;color:var(--muted);margin-top:0.15rem;">
+                Falta de treino e baixa adesão
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card-pill-row">
+            <div class="hero-pill">Avaliação física completa</div>
+            <div class="hero-pill">Feedback do aluno em tempo real</div>
+            <div class="hero-pill">Histórico de progresso visual</div>
+          </div>
+
+          <div class="hero-highlight">
+            <span>★</span>
+            Novo site focado em mostrar esse painel de forma clara para novos clientes e personal trainers.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="section" id="sec-sobre">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-block">
+            <div class="section-kicker">Sobre o MFIT Personal</div>
+            <h2 class="section-title">Plataforma digital para quem vive de treinos.</h2>
+            <p class="section-subtitle">
+              O MFIT Personal centraliza tudo que um personal precisa: prescrição de treinos, avaliação física,
+              acompanhamento, comunicação e finanças. O redesenho do site torna essa proposta muito mais clara para quem
+              chega pela primeira vez.
+            </p>
+          </div>
+          <p class="section-note">
+            Foco na primeira impressão: visitantes entendem <strong>o que é</strong>, <strong>como funciona</strong> e
+            <strong>por que usar</strong> em poucos segundos.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARA QUEM É -->
+    <section class="section" id="sec-para-quem">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-block">
+            <div class="section-kicker">Para quem é</div>
+            <h2 class="section-title">Feito para personal iniciante, intermediário e avançado.</h2>
+            <p class="section-subtitle">
+              O conteúdo do site foi reorganizado para conversar com diferentes níveis de maturidade digital do
+              profissional, deixando claro que qualquer personal pode crescer com o MFIT.
+            </p>
+          </div>
+        </div>
+
+        <div class="personas-grid">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Personal em transição</div>
+              <div class="badge">Começando no digital</div>
+            </div>
+            <div class="card-body">
+              Ideal para quem ainda usa planilha e WhatsApp para tudo.
+              <ul class="list">
+                <li>Treinos organizados em um só lugar.</li>
+                <li>Modelos prontos de rotinas e avaliações.</li>
+                <li>Site explicando o passo a passo para migrar.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Personal intermediário</div>
+              <div class="badge">Automatizando processos</div>
+            </div>
+            <div class="card-body">
+              Já usa alguns aplicativos, mas quer ganhar tempo.
+              <ul class="list">
+                <li>Mostramos como reduzir cliques e retrabalho.</li>
+                <li>Seções do site focadas em produtividade.</li>
+                <li>Exemplos de rotinas otimizadas.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Personal avançado</div>
+              <div class="badge">Escalando consultoria</div>
+            </div>
+            <div class="card-body">
+              Para quem já atende muitos alunos e quer escalar.
+              <ul class="list">
+                <li>Dashboard de evolução para mostrar resultados.</li>
+                <li>Gestão financeira integrada e relatórios.</li>
+                <li>Site demonstra esses diferenciais em destaque.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUNCIONALIDADES -->
+    <section class="section" id="sec-funcionalidades">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-block">
+            <div class="section-kicker">Funcionalidades</div>
+            <h2 class="section-title">Tudo que o MFIT faz, explicado de forma clara no site.</h2>
+            <p class="section-subtitle">
+              A nova landing organiza as funcionalidades em blocos visuais com ícones e linguagem direta, facilitando
+              a compreensão do que a plataforma oferece.
+            </p>
+          </div>
+          <p class="section-note">
+            O visitante não precisa “adivinhar”: o site mostra com exemplos práticos o que ele vai encontrar na
+            plataforma.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="card">
+            <div class="card-icon">📋</div>
+            <div class="card-title">Prescrição de treinos</div>
+            <div class="card-body">
+              Explanação clara sobre como o personal monta treinos personalizados por aluno, com cargas, séries,
+              repetições, vídeos e feedback.
+              <div class="chip-row">
+                <div class="chip">Biblioteca com vídeos</div>
+                <div class="chip">Modelos prontos</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📊</div>
+            <div class="card-title">Avaliação & evolução</div>
+            <div class="card-body">
+              Seção mostrando gráficos e cards de evolução, com foco na nova identidade do site: simples, visual e
+              motivador.
+              <div class="chip-row">
+                <div class="chip">Avaliação física</div>
+                <div class="chip">Comparativo antes / depois</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">💬</div>
+            <div class="card-title">Comunicação integrada</div>
+            <div class="card-body">
+              Destaque para o contato com o aluno via app e integração com WhatsApp, com chamadas no site estimulando
+              a consultoria online.
+              <div class="chip-row">
+                <div class="chip">Lembretes automáticos</div>
+                <div class="chip">Feedback do aluno</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">💰</div>
+            <div class="card-title">Gestão financeira</div>
+            <div class="card-body">
+              Texto voltado a mostrar como o MFIT ajuda a controlar planos, faturas e recebimentos de forma centralizada.
+              <div class="chip-row">
+                <div class="chip">Planos recorrentes</div>
+                <div class="chip">Relatórios financeiros</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📱</div>
+            <div class="card-title">App + Web</div>
+            <div class="card-body">
+              Seção explicando a sinergia entre aplicativo e site, reforçando que o personal tem liberdade para acessar
+              de onde quiser.
+              <div class="chip-row">
+                <div class="chip">Experiência responsiva</div>
+                <div class="chip">Acesso em qualquer dispositivo</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <div class="card-title">Automação do trabalho</div>
+            <div class="card-body">
+              Conteúdo enfatizando que o objetivo é reduzir tarefas manuais e ganhar tempo com automatizações dentro da
+              plataforma.
+              <div class="chip-row">
+                <div class="chip">Menos cliques</div>
+                <div class="chip">Mais tempo com o aluno</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANOS -->
+    <section class="section" id="sec-planos">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-block">
+            <div class="section-kicker">Planos</div>
+            <h2 class="section-title">Planos pensados para o momento da sua carreira.</h2>
+            <p class="section-subtitle">
+              A página de planos foi reorganizada com uma tabela comparativa simples, ajudando o personal a escolher
+              rapidamente o que faz mais sentido para a realidade dele.
+            </p>
+          </div>
+          <p class="section-note">
+            O site destaca o plano mais usado e convida o visitante a iniciar um teste gratuito antes de decidir.
+          </p>
+        </div>
+
+        <div class="plans-wrapper">
+          <div class="plans-toggle" id="plansToggle">
+            <button class="active" data-billing="mensal">Mensal</button>
+            <button data-billing="anual">Anual (economize 20%)</button>
+          </div>
+
+          <div class="plans-grid">
+            <div class="plan-card">
+              <div>
+                <div class="plan-header">
+                  <div class="plan-name">Essencial</div>
+                  <div class="plan-tag">Para começar no digital</div>
+                </div>
+                <div class="plan-price" data-mensal="R$ 49" data-anual="R$ 39">
+                  R$ 49 <span>/mês</span>
+                </div>
+                <ul class="plan-list">
+                  <li>Até 15 alunos ativos.</li>
+                  <li>Prescrição de treinos ilimitada.</li>
+                  <li>Modelos básicos de avaliação física.</li>
+                  <li>Histórico simples de evolução.</li>
+                </ul>
+              </div>
+              <div class="plan-cta">
+                <button class="btn btn-outline" data-scroll="#hero">Testar esse plano</button>
+              </div>
+            </div>
+
+            <div class="plan-card plan-featured">
+              <div>
+                <div class="plan-header">
+                  <div class="plan-name">Profissional</div>
+                  <div class="plan-tag">Equilíbrio ideal para a rotina</div>
+                </div>
+                <div class="plan-price" data-mensal="R$ 79" data-anual="R$ 63">
+                  R$ 79 <span>/mês</span>
+                </div>
+                <ul class="plan-list">
+                  <li>Até 60 alunos ativos.</li>
+                  <li>Avaliação física completa + evolução visual.</li>
+                  <li>Gestão financeira integrada.</li>
+                  <li>Suporte priorizado.</li>
+                </ul>
+              </div>
+              <div class="plan-cta">
+                <button class="btn btn-primary" data-scroll="#hero">Começar com o Profissional</button>
+              </div>
+            </div>
+
+            <div class="plan-card">
+              <div>
+                <div class="plan-header">
+                  <div class="plan-name">Studio & Equipe</div>
+                  <div class="plan-tag">Para times e academias</div>
+                </div>
+                <div class="plan-price" data-mensal="R$ 129" data-anual="R$ 103">
+                  R$ 129 <span>/mês</span>
+                </div>
+                <ul class="plan-list">
+                  <li>Alunos ilimitados.</li>
+                  <li>Múltiplos personal trainers no mesmo ambiente.</li>
+                  <li>Relatórios avançados por unidade ou equipe.</li>
+                  <li>Onboarding dedicado.</li>
+                </ul>
+              </div>
+              <div class="plan-cta">
+                <button class="btn btn-outline" data-scroll="#hero">Falar com atendimento</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEPOIMENTOS / FAQ -->
+    <section class="section" id="sec-depoimentos">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-block">
+            <div class="section-kicker">Resultados na prática</div>
+            <h2 class="section-title">O que muda no dia a dia com o MFIT.</h2>
+            <p class="section-subtitle">
+              Para o projeto, destacamos como o novo site comunica melhor o impacto real da plataforma no trabalho do
+              personal, usando depoimentos e respostas diretas às dúvidas de quem está conhecendo a ferramenta.
+            </p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="avatar">A</div>
+              <div>
+                <div style="font-size:0.88rem;font-weight:600;">Ana, Personal Trainer</div>
+                <div style="font-size:0.75rem;color:var(--muted);">
+                  42 alunos em consultoria online
+                </div>
+              </div>
+            </div>
+            <p>
+              “O que eu mais gostei no novo site foi a clareza na explicação. Eu consegui entender rápido o que
+              a plataforma fazia e como isso entraria na minha rotina. Depois que migrei pro MFIT, parei de perder
+              tempo respondendo as mesmas dúvidas e organizando planilhas.”
+            </p>
+          </div>
+
+          <div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>O que mudou em relação ao site antigo?</span>
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                O conteúdo foi reorganizado em seções mais curtas, visuais e com foco na jornada do personal. Em vez de
+                apenas listar recursos, o novo site explica <strong>benefícios práticos</strong> e mostra exemplos de
+                uso da plataforma.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>Por que isso é uma melhoria de design de interação?</span>
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Porque reduz a carga cognitiva, melhora a navegação, coloca chamadas para ação mais claras e ajuda o
+                usuário a formar um modelo mental do sistema antes mesmo de usar a plataforma.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>O que o novo site comunica logo de cara?</span>
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Que o MFIT é uma plataforma pensada para personal trainers, que centraliza treinos, evolução, finanças
+                e comunicação. Essa mensagem é reforçada no hero, nas seções de “Para quem é” e nas funcionalidades.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>Onde entra o protótipo no trabalho?</span>
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Este próprio layout em HTML, CSS e JS funciona como protótipo navegável. No PDF, vocês podem inserir
+                screenshots das seções (Hero, Para quem é, Funcionalidades, Planos, Resultados) e descrever as
+                decisões de design baseadas na disciplina.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        © <span id="year"></span> MFIT Personal – Protótipo acadêmico para disciplina de Design de Interação.
+      </div>
+      <div class="footer-links">
+        <a data-scroll="#hero">Início</a>
+        <a data-scroll="#sec-funcionalidades">Funcionalidades</a>
+        <a data-scroll="#sec-planos">Planos</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Scroll suave
+  function smoothScrollTo(selector) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - 70;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
+
+  document.querySelectorAll("[data-scroll]").forEach(function (el) {
+    el.addEventListener("click", function () {
+      const target = el.getAttribute("data-scroll");
+      smoothScrollTo(target);
+    });
+  });
+
+  // Menu mobile
+  const mobileBtn = document.getElementById("mobileMenuBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  if (mobileBtn && mobileNav) {
+    mobileBtn.addEventListener("click", function () {
+      mobileNav.classList.toggle("open");
+    });
+  }
+
+  // FAQ
+  document.querySelectorAll(".faq-item").forEach(function (item) {
+    const q = item.querySelector(".faq-question");
+    q.addEventListener("click", function () {
+      item.classList.toggle("active");
+    });
+  });
+
+  // Toggle planos mensal/anual
+  const plansToggle = document.getElementById("plansToggle");
+  if (plansToggle) {
+    plansToggle.querySelectorAll("button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const billing = btn.getAttribute("data-billing");
+        plansToggle.querySelectorAll("button").forEach(function (b) {
+          b.classList.toggle("active", b === btn);
+        });
+
+        document.querySelectorAll(".plan-price").forEach(function (priceEl) {
+          const value = priceEl.getAttribute("data-" + billing);
+          if (value) {
+            const span = priceEl.querySelector("span");
+            priceEl.firstChild.nodeValue = value + " ";
+            span.textContent = "/mês";
+          }
+        });
+      });
+    });
+  }
+
+  // Ano do footer
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
