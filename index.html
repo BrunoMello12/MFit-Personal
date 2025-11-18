@@ -22,6 +22,10 @@
       --radius-pill: 999px;
     }
 
+    html {
+      font-size: 19px; 
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -79,7 +83,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.9rem 0;
+      padding: 2.0rem 0;
       gap: 1rem;
     }
 
@@ -109,18 +113,19 @@
     .logo-sub {
       font-size: 0.75rem;
       color: var(--muted);
+      white-space: nowrap;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1rem;
       font-size: 0.9rem;
     }
 
     .nav-links {
       display: flex;
-      gap: 1.2rem;
+      gap: 0.9rem;
     }
 
     .nav-link {
@@ -129,6 +134,7 @@
       padding-bottom: 2px;
       border-bottom: 1px solid transparent;
       transition: color 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap; 
     }
 
     .nav-link:hover {
@@ -140,6 +146,7 @@
       display: flex;
       gap: 0.75rem;
       align-items: center;
+      gap: 0.6rem; 
     }
 
     .btn {
@@ -438,7 +445,7 @@
 
     /* Sections */
     .section {
-      padding: 3rem 0;
+      padding: 2rem 0;
     }
 
     .section-header {
@@ -446,7 +453,7 @@
       justify-content: space-between;
       align-items: flex-end;
       gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.25rem;
       flex-wrap: wrap;
     }
 
